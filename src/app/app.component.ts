@@ -24,7 +24,7 @@ export class AppComponent {
   title = 'ol-angular';
   map: any;
   xFeaturesStyle: any;
-  src:any;
+  src: any;
   // controls
   fullscreen = new OlControls.FullScreen();
   mousePositionControl = new OlControls.MousePosition();
@@ -46,11 +46,12 @@ export class AppComponent {
 
   ngOnInit() {
 
-    this.appService.getVectorData().subscribe((x)=>{
-      var trimX =(x.slice(18)).slice(0, -1);
-      this.src = JSON.parse(trimX);
-    });
+    this.appService.getVectorData().subscribe((x) => {
+      var trimX = (x.slice(18)).slice(0, -1);
+      this.src = JSON.parse(trimX).features;
+     
 
+    });
     this.map = new Map({
       target: 'ol_map', // id in div so map can be shown
       keyboardEventTarget: document,
@@ -219,6 +220,7 @@ export class AppComponent {
     const GeoJSON = new olLayers.VectorImage({
       source: new OLSrc.Vector({
         //loader:this.x,
+        //features:this.src,
         url: '../assets/geo/map.geojson',
         format: new format.GeoJSON()
       }),
@@ -239,13 +241,13 @@ export class AppComponent {
     //   visible: false,
     // })
 
-    //Layer Groups
-    const layerGroup = new olLayers.Group({
-      layers: [
-        bingMaps, stamen, openstreetMapVectorTile, GeoJSON
-      ]
-    })
-    this.map.addLayer(layerGroup) // to display the layer in map
+     //Layer Groups
+     const layerGroup = new olLayers.Group({
+       layers: [
+         bingMaps, stamen, openstreetMapVectorTile, GeoJSON
+       ]
+     })
+     this.map.addLayer(layerGroup) // to display the layer in map
 
 
     // Layer Switcher Logic for BaseLayers
